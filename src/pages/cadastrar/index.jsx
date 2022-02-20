@@ -19,12 +19,12 @@ function handleSubmit(e){
         username:first,
         password: passW
     })
-    .then(res=> res.success=== true ? redirect() : res)
+    .then(res=> res.success=== true ? redirect() : res);
 }
 
 function redirect(){
-    alert('Cadastrado com sucesso!')
-    window.location.href="/"
+    alert('Cadastrado com sucesso!');
+    window.location.href="/";
 }
 
     return (

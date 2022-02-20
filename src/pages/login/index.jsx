@@ -1,23 +1,22 @@
 import * as S from './style.js';
 import {Link} from 'react-router-dom';
 import {FakerApi} from '../../services/fakerApi';
-import Logo from '../../logo.png'
+import Logo from '../../logo.png';
+
 export default function LogIn(){
 
 function handleSubmit(e){ 
     e.preventDefault();
     const first = e.target.name.value;
-    const passW = e.target.pass.value
-
+    const passW = e.target.pass.value;
     if(!first || !passW) {
         alert('Preencha os campos')
     }
-
     window.FakerApi.post('/login', {
         username:first,
         password: passW
     })
-    .then(res=> res.success === true ? window.location.href="/feed" : '')
+    .then(res=> res.success === true ? window.location.href="/feed" : '');
 }
 
 
