@@ -7,9 +7,13 @@ export default function SignIn(){
 
 function handleSubmit(e){
     e.preventDefault();
-    const nick = e.target.nick.value
+    const nick = e.target.nick.value;
     const first = e.target.name.value;
     const passW = e.target.pass.value
+    if(!nick || !first || !passW){
+        alert('Preencha todos os campos para se cadastrar.');
+        return;
+    }
     window.FakerApi.post('/register', {
         name:nick,
         username:first,
@@ -25,12 +29,9 @@ function redirect(){
 
     return (
         <S.Container>
-            
              <S.Content>
                 <img src={Logo} />
-
             <h1>Cadastro de usuário</h1>
-           
             <form onSubmit={handleSubmit}>
                 <div>
                     <label >Nome</label>

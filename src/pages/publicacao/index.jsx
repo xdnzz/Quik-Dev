@@ -2,20 +2,18 @@ import { useEffect, useState } from 'react';
 import * as F from './style';
 import Modal from 'react-modal';
 import { FaRegEdit } from "react-icons/fa";
-import { FaTrashAlt } from "react-icons/fa";
 import { FiTrash } from "react-icons/fi";
 
 Modal.setAppElement("#root");
 
 export default function Feed(){
 
-    var teste = []
+    var dataStorageArray = [];
     const [data, setData] = useState([]);
     const [modalEdit, setModalEdit] = useState(false);
     const [modalEditComent, setModalEditComent] = useState(false);
     const [inputValor, setInputValor] = useState('');
     const [inputSetado, setInputSetado] = useState([]);
-    
 
     useEffect(()=>{
         function callData(){
@@ -28,7 +26,7 @@ export default function Feed(){
 
     useEffect(()=>{
     const getData = localStorage.getItem('Post');
-    teste.push(getData);
+    dataStorageArray.push(getData);
     }, []);
 
 
@@ -41,7 +39,6 @@ function editarComentario(e){
     setModalEditComent(true)
     localStorage.setItem('keycoment', e)    
 }
-
 
 function handleSubmit(e){
     e.preventDefault();
@@ -63,7 +60,7 @@ function handleSubmit(e){
 
 }
 
-function deletarFuncao(){
+function finalizarSetagemDados(){
     const key = localStorage.getItem('key');
     const converter = parseInt(key)
     const titleLocal = localStorage.getItem('title');
@@ -76,7 +73,7 @@ function deletarFuncao(){
 })
 }
 
-function deletarFuncaoComent(){
+function finalizarSetagemDadosComent(){
     const key = localStorage.getItem('keycoment');
     const converter = parseInt(key);
     const conteudo = localStorage.getItem('novocomentario');
@@ -98,7 +95,7 @@ function handleSubmitEdit(e){
     }
     localStorage.setItem('title', title);
     localStorage.setItem('content', content);
-    deletarFuncao()
+    finalizarSetagemDados()
     setModalEdit(false)
 }
 
@@ -106,10 +103,9 @@ function handleSubmitEditComent(e){
     e.preventDefault();
     const comentario = e.target.comentarioname.value
     localStorage.setItem('novocomentario', comentario);
-    deletarFuncaoComent()
+    finalizarSetagemDadosComent()
     setModalEditComent(false)
 }
-
 
 function deletePost(e){
     window.FakerApi.delete('/posts/remove', { post_id: e })
@@ -150,13 +146,11 @@ function closeModalEdit(){
 }
 
 function logOut(){
-    alert('Deslogado;');
     window.FakerApi.post('/logout', {});
     window.location.href="/";
 }
 
-
-    return (
+return (
         <F.Container>
             <Modal 
             isOpen={modalEdit} 
@@ -165,25 +159,26 @@ function logOut(){
             className="react-modal-content"
             >
                <F.ModalContent>
-               <h3>Editar postagem</h3>
+                <h3>Editar postagem</h3>
                 <form onSubmit={handleSubmitEdit}>
-                <div>
-                    <label>Digite o novo título da postagem</label>
-                    <input 
-                    type="text" 
-                    name="titleEdit" 
-                    />
-                </div>
-                <div>
-                    <label>Digite o novo conteúdo da postagem</label>
-                    <textarea 
-                    name="contentEdit" 
-                    />
-                </div>
+                    <div>
+                        <label>Digite o novo título da postagem</label>
+                        <input 
+                        type="text" 
+                        name="titleEdit" 
+                        />
+                    </div>
+                    <div>
+                        <label>Digite o novo conteúdo da postagem</label>
+                        <textarea 
+                        name="contentEdit" 
+                        />
+                    </div>
                     <button>Editar</button>
                 </form>
                </F.ModalContent>
             </Modal>
+
             <Modal 
             isOpen={modalEditComent} 
             onRequestClose={closeModalEdit}
@@ -193,25 +188,23 @@ function logOut(){
                 <F.ModalContent>
                     <h3>Editar comentário</h3>
                     <form onSubmit={handleSubmitEditComent}>
-                    <div>
-                        <label>Digite o novo comentario</label>
-                        <textarea
-                        id="areacoment"
-                        name="comentarioname" 
-                        />
-                    </div>
-                
-                        <button>Editar</button>
+                        <div>
+                            <label>Digite o novo comentario</label>
+                            <textarea
+                            id="areacoment"
+                            name="comentarioname" 
+                            />
+                        </div>
+                            <button>Editar</button>
                     </form>
                 </F.ModalContent>
             </Modal>
+
             <F.PubliContent>
-             <F.HeaderTitle>
-               <h1>Criar nova puplicação</h1> 
-               <button
-               onClick={logOut}
-               >Log out</button>
-               </F.HeaderTitle>
+            <F.HeaderTitle>
+                <h1>Criar nova puplicação</h1> 
+                <button onClick={logOut}>Log out</button>
+            </F.HeaderTitle>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Título da postagem</label>
@@ -229,7 +222,6 @@ function logOut(){
                     id="conteudopostagem"
                     />
                 </div>
-               
                 <div className='designButton'>
                 <button>Publicar</button>
                 </div>
@@ -279,8 +271,6 @@ function logOut(){
                     </F.comentButtonSection>
                 </F.Content>
             })}
-
-         
         </F.Container>
     )
 }
