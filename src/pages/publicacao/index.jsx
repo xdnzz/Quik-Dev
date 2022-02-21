@@ -14,6 +14,7 @@ export default function Feed(){
     const [modalEditComent, setModalEditComent] = useState(false);
     const [inputValor, setInputValor] = useState('');
     const [inputSetado, setInputSetado] = useState([]);
+    const [valueIdComent, setValueIdComent] = useState(1);
 
     useEffect(()=>{
         function callData(){
@@ -82,6 +83,7 @@ function finalizarSetagemDadosComent(){
         return;
     }
     //Como está na API: FakerApi.put('/comments/update', { post_id: 1, comment_id: 1, post: { content:'Comentario atualizado' } })
+    
     window.FakerApi.put('/comments/update', 
     {post_id: converter, comment_id: converter, comment: {content:conteudo}});
     
@@ -133,8 +135,11 @@ function changeInputValue(e){
 
 function addComent(e){
     const comentId = document.getElementById('comentarioID');
+    if(!comentId.value){
+        alert('Comentário não deve ir vazio');
+        return;
+    }
     setInputSetado([...inputSetado, inputValor]);
-    setInputValor('');
     window.FakerApi.post('/comments/create',
      { post_id: e, comment: { content: inputValor } });
      comentId.value='';
@@ -231,7 +236,7 @@ return (
             </form>
             </F.PubliContent>
             {data.map((e)=>{
-                return <F.Content  key={e.id}>
+                return <F.Content key={e.id}>
                     <F.PublishedContent>
                     <span>Título da postagem:</span>
                     <p>{e.title}</p>
@@ -262,7 +267,6 @@ return (
                                        onClick={()=>deleteComent(c.id, c)}
                                        style={{cursor:'Pointer'}}
                                        /><label>Excluir</label>
-                                   
                                    </F.ButtonComents>
                         
                                     </div>
