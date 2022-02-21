@@ -36,7 +36,8 @@ function editarPostagem(e){
     localStorage.setItem('key', e)    
 }
 
-function editarComentario(e){
+function editarComentario(e, data){
+    console.log(data)
     setModalEditComent(true)
     localStorage.setItem('keycoment', e)    
 }
@@ -74,7 +75,7 @@ function finalizarSetagemDados(){
 })
 }
 
-function finalizarSetagemDadosComent(){
+    function finalizarSetagemDadosComent(){
     const key = localStorage.getItem('keycoment');
     const converter = parseInt(key);
     const conteudo = localStorage.getItem('novocomentario');
@@ -83,9 +84,10 @@ function finalizarSetagemDadosComent(){
         return;
     }
     //Como está na API: FakerApi.put('/comments/update', { post_id: 1, comment_id: 1, post: { content:'Comentario atualizado' } })
-    
+    //Também nao foi possível simular de forma sucetível a remoçao do post pelo tutorial passado, já que retorna um erro pois api nao retorna um ID para o comentário de forma dinamica
     window.FakerApi.put('/comments/update', 
     {post_id: converter, comment_id: converter, comment: {content:conteudo}});
+    setValueIdComent(valueIdComent + 1)
     
 }
 
@@ -135,18 +137,15 @@ function changeInputValue(e){
 
 function addComent(e){
     const comentId = document.getElementById('comentarioID');
-    if(!comentId.value){
-        alert('Comentário não deve ir vazio');
-        return;
-    }
     setInputSetado([...inputSetado, inputValor]);
     window.FakerApi.post('/comments/create',
      { post_id: e, comment: { content: inputValor } });
      comentId.value='';
 }
 
-function deleteComent(e){
-    window.FakerApi.delete('/comments/remove', { post_id: e, comment_id: e})
+function deleteComent(e,data){
+    console.log(data)
+    window.FakerApi.delete('/comments/remove', { post_id: data, comment_id: e})
 }
 
 function closeModalEdit(){
@@ -260,15 +259,14 @@ return (
                                     {c.content}
                                         <F.ButtonComents>
                                        <FaRegEdit
-                                       onClick={()=>editarComentario(c.id, c)}
+                                       onClick={()=>editarComentario(c.id, e.id)}
                                        style={{cursor:'Pointer'}}
                                        /> <label style={{marginRight:'20px'}}>Editar</label>
                                        <FiTrash 
-                                       onClick={()=>deleteComent(c.id, c)}
+                                       onClick={()=>deleteComent(c.id, e.id)}
                                        style={{cursor:'Pointer'}}
                                        /><label>Excluir</label>
                                    </F.ButtonComents>
-                        
                                     </div>
                         })}
                     </F.CommentSection>
