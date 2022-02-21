@@ -81,8 +81,10 @@ function finalizarSetagemDadosComent(){
         alert('Preencha o novo comentário');
         return;
     }
+    //Como está na API: FakerApi.put('/comments/update', { post_id: 1, comment_id: 1, post: { content:'Comentario atualizado' } })
     window.FakerApi.put('/comments/update', 
     {post_id: converter, comment_id: converter, comment: {content:conteudo}});
+    
 }
 
 function handleSubmitEdit(e){
@@ -141,6 +143,7 @@ function addComent(e){
 function deleteComent(e){
     window.FakerApi.delete('/comments/remove', { post_id: e, comment_id: e})
 }
+
 function closeModalEdit(){
     setModalEditComent(false);
 }
