@@ -251,7 +251,7 @@ return (
                     <F.CommentSection>
                         <h3>Comentários</h3>
                          {e.comments?.map((c)=>{
-                            return <div>
+                            return <div key={c.id}>
                                     {c.content}
                                         <F.ButtonComents>
                                        <FaRegEdit
