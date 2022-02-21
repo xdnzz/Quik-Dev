@@ -37,8 +37,8 @@ function editarPostagem(e){
 }
 
 function editarComentario(e, data){
-    console.log(data)
     setModalEditComent(true)
+    localStorage.setItem('postkey', data)
     localStorage.setItem('keycoment', e)    
 }
 
@@ -76,8 +76,10 @@ function finalizarSetagemDados(){
 }
 
     function finalizarSetagemDadosComent(){
+    const postagem = localStorage.getItem('postkey');
     const key = localStorage.getItem('keycoment');
     const converter = parseInt(key);
+    const converterPost = parseInt(postagem)
     const conteudo = localStorage.getItem('novocomentario');
     if(!conteudo) {
         alert('Preencha o novo comentário');
@@ -86,7 +88,7 @@ function finalizarSetagemDados(){
     //Como está na API: FakerApi.put('/comments/update', { post_id: 1, comment_id: 1, post: { content:'Comentario atualizado' } })
     //Também nao foi possível simular de forma sucetível a remoçao do post pelo tutorial passado, já que retorna um erro pois api nao retorna um ID para o comentário de forma dinamica
     window.FakerApi.put('/comments/update', 
-    {post_id: converter, comment_id: converter, comment: {content:conteudo}});
+    {post_id: converterPost, comment_id: converter, comment: {content:conteudo}});
     setValueIdComent(valueIdComent + 1)
     
 }
